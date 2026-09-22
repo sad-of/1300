@@ -36,7 +36,7 @@ const lines = [];
 function hostOk() {
     var m = document.getElementById("msgs");
     if (m) {
-        m.innerHTML = "GoldHEN v2.4b18.10 Loaded ...";
+        m.innerHTML = "GoldHEN v2.4b18.12 Loaded ...";
     }
 }
 
@@ -277,7 +277,7 @@ function makeRpc(worker) {
 
         let payload = null;
         try {
-            const prsp = await fetch("goldhen_2.4b18.10.bin");
+            const prsp = await fetch("goldhen_2.4b18.12.bin");
             if (prsp.ok) payload = new Uint8Array(await prsp.arrayBuffer());
         } catch (e) {
             mark("PAYLOAD-FETCH-FAILED", (e && e.message) ? e.message : String(e));
@@ -3543,7 +3543,6 @@ function makeRpc(worker) {
                                                     : "returned " + rc);
                                             payloadRunning = launched;
                                             if (launched) {
-                                                hostOk();
                                                 mark("PAYLOAD-RUNNING", "bytes="
                                                     + payload.length + " entry="
                                                     + entry);
@@ -3842,6 +3841,9 @@ function makeRpc(worker) {
                 hostFail();
             }
         } else if (repaired && cleanupDone) {
+			if (payloadRunning) {
+                hostOk();
+            }
             mark("SAFE-TO-EXIT", "chunkX=freed-once-by-fd" + pktoptsTwins[0]
                 + " chunkY=leaked-0x80 pipes=+1ref-each"
                 + " leaks=2-pipe-pairs+0x80");
